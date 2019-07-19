@@ -160,6 +160,7 @@ def print_results(printJson, issue):
     commitHash = issue['commitHash']
     reason = issue['reason']
     path = issue['path']
+    secrets = issue['stringsFound']
 
     if printJson:
         print(json.dumps(issue, sort_keys=True))
@@ -173,19 +174,22 @@ def print_results(printJson, issue):
         print(hashStr)
         filePath = "{}Filepath: {}{}".format(bcolors.OKGREEN, path, bcolors.ENDC)
         print(filePath)
+        secrets = "{}Secrets: {}{}".format(bcolors.WARNING, secrets, bcolors.ENDC)
+        print(secrets)
+
 
         if sys.version_info >= (3, 0):
             branchStr = "{}Branch: {}{}".format(bcolors.OKGREEN, branch_name, bcolors.ENDC)
             print(branchStr)
             commitStr = "{}Commit: {}{}".format(bcolors.OKGREEN, prev_commit, bcolors.ENDC)
             print(commitStr)
-            print(printableDiff)
+            #print(printableDiff)
         else:
             branchStr = "{}Branch: {}{}".format(bcolors.OKGREEN, branch_name.encode('utf-8'), bcolors.ENDC)
             print(branchStr)
             commitStr = "{}Commit: {}{}".format(bcolors.OKGREEN, prev_commit.encode('utf-8'), bcolors.ENDC)
             print(commitStr)
-            print(printableDiff.encode('utf-8'))
+            #print(printableDiff.encode('utf-8'))
         print("~~~~~~~~~~~~~~~~~~~~~")
 
 def find_entropy(printableDiff, commit_time, branch_name, prev_commit, blob, commitHash):
@@ -356,7 +360,7 @@ def find_strings(git_url, since_commit=None, max_depth=1000000, printJson=False,
     return output
 
 def clean_up(output):
-    print("Whhaat")
+    #print("Completed")
     issues_path = output.get("issues_path", None)
     if issues_path and os.path.isdir(issues_path):
         shutil.rmtree(output["issues_path"])
